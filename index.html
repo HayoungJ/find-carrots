@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Find Carrots🥕</title>
+
+    <script src="main.js" defer></script>
+    <script
+      src="https://kit.fontawesome.com/f7756ac958.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <section class="game">
+      <nav class="menu">
+        <button class="menu__button menu__button--start">
+          <i class="fas fa-play"></i>
+          <i class="fas fa-pause"></i>
+        </button>
+        <div class="menu__timer">0:10</div>
+        <div class="menu__counter">10</div>
+      </nav>
+      <div class="find-carrot"></div>
+      <div class="pop-up pop-up--difficulty">
+        <button class="pop-up__close">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <ul class="pop-up__select-diff">
+          <li data-id="easy">EASY</li>
+          <li data-id="medium">MEDIUM</li>
+          <li data-id="extreme">EXTREME</li>
+        </ul>
+      </div>
+      <div class="pop-up pop-up--retry">
+        <button class="pop-up__close">
+          <i class="fas fa-times-circle"></i>
+        </button>
+        <span class="pop-up__title">Will you try again?</span>
+        <button class="pop-up__restart">
+          <i class="fas fa-redo-alt"></i>
+        </button>
+      </div>
+      <div class="pop-up pop-up--fail">
+        <span class="pop-up__title">You Lose😭 Will you try again?</span>
+        <button class="pop-up__restart">
+          <i class="fas fa-redo-alt"></i>
+        </button>
+      </div>
+    </section>
+    <section class="desc"></section>
+  </body>
+</html>

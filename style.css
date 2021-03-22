@@ -162,10 +162,6 @@ ul.pop-up__select-diff > li {
   cursor: pointer;
 }
 
-section.desc {
-  border: 1px solid red;
-}
-
 span.pop-up__title {
   display: block;
   margin: 40px 0 20px;
@@ -188,4 +184,16 @@ button.pop-up__restart {
 button.pop-up__restart:hover {
   background-color: rgba(50, 50, 50, 0.9);
   color: white;
+}
+
+section.desc {
+  color: white;
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 48px;
+  text-align: center;
+}
+
+section.desc > strong {
+  color: #ffcc00;
 }

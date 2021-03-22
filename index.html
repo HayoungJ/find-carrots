@@ -15,7 +15,7 @@
   <body>
     <section class="game">
       <nav class="menu">
-        <button class="menu__button menu__button--start">
+        <button class="menu__button menu__button--start" data-action="start">
           <i class="fas fa-play"></i>
           <i class="fas fa-pause"></i>
         </button>
@@ -23,30 +23,38 @@
         <div class="menu__counter">10</div>
       </nav>
       <div class="find-carrot"></div>
-      <div class="pop-up pop-up--difficulty">
-        <button class="pop-up__close">
-          <i class="fas fa-times-circle"></i>
-        </button>
-        <ul class="pop-up__select-diff">
-          <li data-id="easy">EASY</li>
-          <li data-id="medium">MEDIUM</li>
-          <li data-id="extreme">EXTREME</li>
-        </ul>
-      </div>
-      <div class="pop-up pop-up--retry">
-        <button class="pop-up__close">
-          <i class="fas fa-times-circle"></i>
-        </button>
-        <span class="pop-up__title">Will you try again?</span>
-        <button class="pop-up__restart">
-          <i class="fas fa-redo-alt"></i>
-        </button>
-      </div>
-      <div class="pop-up pop-up--fail">
-        <span class="pop-up__title">You Lose😭 Will you try again?</span>
-        <button class="pop-up__restart">
-          <i class="fas fa-redo-alt"></i>
-        </button>
+      <div class="pop-up-wrap">
+        <div class="pop-up pop-up--difficulty" data-id="difficulty">
+          <button class="pop-up__close">
+            <i class="fas fa-times-circle" data-work="close"></i>
+          </button>
+          <ul class="pop-up__select-diff">
+            <li data-id="easy">EASY</li>
+            <li data-id="medium">MEDIUM</li>
+            <li data-id="extreme">EXTREME</li>
+          </ul>
+        </div>
+        <div class="pop-up pop-up--retry" data-id="retry">
+          <button class="pop-up__close">
+            <i class="fas fa-times-circle" data-work="close"></i>
+          </button>
+          <span class="pop-up__title">Will you try again?</span>
+          <button class="pop-up__restart" data-work="restart">
+            <i class="fas fa-redo-alt"></i>
+          </button>
+        </div>
+        <div class="pop-up pop-up--fail" data-id="fail">
+          <span class="pop-up__title">You Lose😭 Will you try again?</span>
+          <button class="pop-up__restart" data-work="restart">
+            <i class="fas fa-redo-alt"></i>
+          </button>
+        </div>
+        <div class="pop-up pop-up--win" data-id="win">
+          <span class="pop-up__title">You win🎉 Will you try again?</span>
+          <button class="pop-up__restart" data-work="restart">
+            <i class="fas fa-redo-alt"></i>
+          </button>
+        </div>
       </div>
     </section>
     <section class="desc"></section>

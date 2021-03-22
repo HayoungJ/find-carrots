@@ -11,6 +11,7 @@
       crossorigin="anonymous"
     ></script>
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" href="data:;base64, iVBORw0KGgo=" />
   </head>
   <body>
     <section class="game">
@@ -19,8 +20,8 @@
           <i class="fas fa-play"></i>
           <i class="fas fa-pause"></i>
         </button>
-        <div class="menu__timer">0:10</div>
-        <div class="menu__counter">10</div>
+        <div class="menu__timer">00:10</div>
+        <div class="menu__counter">0</div>
       </nav>
       <div class="find-carrot"></div>
       <div class="pop-up-wrap">
@@ -40,19 +41,19 @@
           </button>
           <span class="pop-up__title">Will you try again?</span>
           <button class="pop-up__restart" data-work="restart">
-            <i class="fas fa-redo-alt"></i>
+            <i class="fas fa-redo-alt" data-work="restart"></i>
           </button>
         </div>
         <div class="pop-up pop-up--fail" data-id="fail">
           <span class="pop-up__title">You Lose😭 Will you try again?</span>
           <button class="pop-up__restart" data-work="restart">
-            <i class="fas fa-redo-alt"></i>
+            <i class="fas fa-redo-alt" data-work="restart"></i>
           </button>
         </div>
         <div class="pop-up pop-up--win" data-id="win">
           <span class="pop-up__title">You win🎉 Will you try again?</span>
           <button class="pop-up__restart" data-work="restart">
-            <i class="fas fa-redo-alt"></i>
+            <i class="fas fa-redo-alt" data-work="restart"></i>
           </button>
         </div>
       </div>

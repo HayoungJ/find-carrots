@@ -10,6 +10,13 @@ const obstacle = document.createElement('img');
 const popUpWrap = document.querySelector('.pop-up-wrap');
 const diffPopUp = document.querySelector('.pop-up__select-diff');
 const restart = document.querySelector('.pop-up__restart');
+const bgSound = document.createElement('audio');
+const targetSound = document.createElement('audio');
+const obstacleSound = document.createElement('audio');
+const buttonSound = document.createElement('audio');
+const winSound = document.createElement('audio');
+
+let firstGame = true;
 let checkTimer;
 let remainingTarget = 0;
 let remainingTime = 10;
@@ -20,6 +27,13 @@ target.setAttribute('data-type', 'target');
 obstacle.setAttribute('src', 'img/bug.png');
 obstacle.setAttribute('alt', 'bug');
 obstacle.setAttribute('data-type', 'obstacle');
+
+bgSound.setAttribute('src', 'sound/bg.mp3');
+bgSound.setAttribute('loop', 'true');
+targetSound.setAttribute('src', 'sound/carrot_pull.mp3');
+obstacleSound.setAttribute('src', 'sound/bug_pull.mp3');
+buttonSound.setAttribute('src', 'sound/alert.wav');
+winSound.setAttribute('src', 'sound/game_win.mp3');
 
 class Image {
   constructor(target, obstacle, height) {
@@ -85,12 +99,36 @@ const setDifficulty = (selectedDiff) => {
   return gameImage;
 };
 
+const resetGame = () => {
+  changePopUpStatus('fail', 'none');
+  changePopUpStatus('retry', 'none');
+  changePopUpStatus('win', 'none');
+  changePopUpStatus('difficulty', 'block');
+
+  playButton.classList.remove('menu__button--pause');
+  playButton.classList.add('menu__button--start');
+  playButton.dataset.action = 'start';
+
+  playableArea.innerHTML = '';
+  timer.innerText = '00:10';
+  remainingTime = 10;
+  counter.innerText = '0';
+};
+
 playButton.addEventListener('click', () => {
   if (playButton.dataset.action === 'start') {
     changePopUpStatus('difficulty', 'block');
+
+    if (firstGame) {
+      bgSound.play();
+      firstGame = false;
+    }
+
+    buttonSound.play();
   } else if (playButton.dataset.action === 'pause') {
     changePopUpStatus('retry', 'block');
     clearInterval(checkTimer);
+    buttonSound.play();
   }
 });
 
@@ -98,6 +136,7 @@ diffPopUp.addEventListener('click', (event) => {
   const selectedDiff = event.target.dataset.id;
 
   if (selectedDiff) {
+    buttonSound.play();
     const gameImage = setDifficulty(event.target.dataset.id);
     gameImage.setImage(target, 'target');
     gameImage.setImage(obstacle, 'obstacle');
@@ -120,6 +159,8 @@ diffPopUp.addEventListener('click', (event) => {
 
 playableArea.addEventListener('click', () => {
   if (event.target.dataset.type === 'target') {
+    targetSound.play();
+
     event.target.remove();
     counter.innerText = --remainingTarget;
 
@@ -129,17 +170,23 @@ playableArea.addEventListener('click', () => {
       else {
         changePopUpStatus('win', 'block');
         clearInterval(checkTimer);
+        winSound.play();
         break;
       }
     }
   } else if (event.target.dataset.type === 'obstacle') {
+    obstacleSound.play();
     changePopUpStatus('fail', 'block');
     clearInterval(checkTimer);
   }
 });
-popUpWrap.addEventListener('click', () => {
-  if (event.target.dataset.work === 'restart') {
-    location.reload();
+
+popUpWrap.addEventListener('click', (event) => {
+  const clicked = event.target;
+
+  if (clicked.dataset.work === 'restart') {
+    buttonSound.play();
+    resetGame();
   } else if (event.target.dataset.work === 'close') {
     const popUpId = event.target.closest(`.pop-up`).dataset.id;
     changePopUpStatus(popUpId, 'none');

@@ -20,6 +20,10 @@ li {
   list-style: none;
 }
 
+.hide {
+  display: none;
+}
+
 body {
   margin: 0;
   padding: 0;
@@ -123,7 +127,6 @@ div.pop-up-wrap {
   left: 0;
   width: 100%;
   height: 100%;
-  display: none;
 }
 
 div.pop-up {
@@ -134,7 +137,6 @@ div.pop-up {
   top: calc(50% - 100px);
   background: rgba(255, 255, 255, 0.95);
   border-radius: 5px;
-  display: none;
 }
 
 button.pop-up__close {

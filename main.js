@@ -1,49 +1,65 @@
 'use strict';
 
-const gameArea = document.querySelector('.game');
+const TIME = 10;
+const TARGET_IMG_PATH = 'img/carrot.png';
+const OBSTACLE_IMG_PATH = 'img/bug.png';
+const E_SETTING = { target: 5, obstacle: 5, height: 500 };
+const M_SETTING = { target: 10, obstacle: 10, height: 600 };
+const EX_SETTING = { target: 10, obstacle: 15, height: 600 };
+const WIDTH = 700;
+const CLOSABLE = ['retry'];
+
+const gameFrame = document.querySelector('.game');
+const menuArea = document.querySelector('.menu');
 const playableArea = document.querySelector('.find-carrot');
 const playButton = document.querySelector('.menu__button');
 const counter = document.querySelector('.menu__counter');
 const timer = document.querySelector('.menu__timer');
+const popUpWrap = document.querySelector('.pop-up-wrap');
+const defaultPopUp = document.querySelector('.pop-up--text');
+const diffPopUp = document.querySelector('.pop-up--difficulty');
+const popUpTitle = document.querySelector('.pop-up__title');
+const restartBtn = document.querySelector('.pop-up__restart');
+const closeBtn = document.querySelector('.pop-up__close');
+
 const target = document.createElement('img');
 const obstacle = document.createElement('img');
-const popUpWrap = document.querySelector('.pop-up-wrap');
-const diffPopUp = document.querySelector('.pop-up__select-diff');
-const restart = document.querySelector('.pop-up__restart');
-const bgSound = document.createElement('audio');
-const targetSound = document.createElement('audio');
-const obstacleSound = document.createElement('audio');
-const buttonSound = document.createElement('audio');
-const winSound = document.createElement('audio');
+
+const bgSound = new Audio('sound/bg.mp3');
+const targetSound = new Audio('sound/carrot_pull.mp3');
+const obstacleSound = new Audio('sound/bug_pull.mp3');
+const buttonSound = new Audio('sound/alert.wav');
+const winSound = new Audio('sound/game_win.mp3');
 
 let firstGame = true;
-let checkTimer;
+let checkTimer = undefined;
 let remainingTarget = 0;
-let remainingTime = 10;
+let remainingTime = TIME;
 
-target.setAttribute('src', 'img/carrot.png');
-target.setAttribute('alt', 'carrot');
+target.setAttribute('src', TARGET_IMG_PATH);
 target.setAttribute('data-type', 'target');
-obstacle.setAttribute('src', 'img/bug.png');
-obstacle.setAttribute('alt', 'bug');
+obstacle.setAttribute('src', OBSTACLE_IMG_PATH);
 obstacle.setAttribute('data-type', 'obstacle');
 
-bgSound.setAttribute('src', 'sound/bg.mp3');
 bgSound.setAttribute('loop', 'true');
-targetSound.setAttribute('src', 'sound/carrot_pull.mp3');
-obstacleSound.setAttribute('src', 'sound/bug_pull.mp3');
-buttonSound.setAttribute('src', 'sound/alert.wav');
-winSound.setAttribute('src', 'sound/game_win.mp3');
 
 class Image {
-  constructor(target, obstacle, height) {
-    this.target = target;
-    this.obstacle = obstacle;
-    this.height = height;
+  constructor(setting) {
+    this.target = setting.target;
+    this.obstacle = setting.obstacle;
+    this.height = setting.height;
+  }
+
+  get height() {
+    return this._height;
+  }
+
+  set height(value) {
+    this._height = value - menuArea.clientHeight;
   }
 
   setImageCoord = (item) => {
-    const xMax = 700 - item.naturalWidth;
+    const xMax = WIDTH - item.naturalWidth;
     const yMax = this.height - item.naturalHeight;
     this.x = Math.floor(Math.random() * xMax);
     this.y = Math.floor(Math.random() * yMax);
@@ -59,75 +75,129 @@ class Image {
   };
 }
 
-const changePopUpStatus = (type, status) => {
-  const popUp = document.querySelector(`.pop-up--${type}`);
+class PopUpWithTitle {
+  constructor(type, text) {
+    this.type = type;
+    this.text = text;
+  }
 
-  popUpWrap.style.display = status;
-  popUp.style.display = status;
+  get closable() {
+    if (CLOSABLE.includes(this.type)) return true;
+    else return false;
+  }
+
+  openPopUp = () => {
+    popUpTitle.innerText = this.text;
+    popUpWrap.classList.remove('hide');
+    defaultPopUp.classList.remove('hide');
+    const hideButton = this.closable ? 'visible' : 'hidden';
+    defaultPopUp.querySelector('.pop-up__close').style.visibility = hideButton;
+  };
+}
+
+const openDiffPopUp = () => {
+  popUpWrap.classList.remove('hide');
+  diffPopUp.classList.remove('hide');
+};
+
+const closePopUp = () => {
+  popUpWrap.classList.add('hide');
+  defaultPopUp.classList.add('hide');
+  diffPopUp.classList.add('hide');
+};
+
+const initGame = () => {
+  closePopUp();
+  openDiffPopUp();
+
+  showStartButton(true);
+  playableArea.innerHTML = '';
+  timer.innerText = `00:${TIME}`;
+  remainingTime = TIME;
+  counter.innerText = '0';
+};
+
+const finishGame = (result, text) => {
+  const resultPopUp = new PopUpWithTitle(result, text);
+  resultPopUp.openPopUp();
+  clearInterval(checkTimer);
 };
 
 const setDifficulty = (selectedDiff) => {
-  const gameImage = new Image();
+  diffPopUp.classList.remove('hide');
+
+  let setting = {};
 
   if (selectedDiff) {
     switch (selectedDiff) {
       case 'easy':
-        gameArea.style.height = '500px';
-        (gameImage.target = 5),
-          (gameImage.obstacle = 5),
-          (gameImage.height = 250);
-        remainingTarget = 5;
+        gameFrame.style.height = `${E_SETTING.height}px`;
+        setting = E_SETTING;
+        remainingTarget = E_SETTING.target;
         break;
       case 'medium':
-        gameArea.style.height = '600px';
-        (gameImage.target = 10),
-          (gameImage.obstacle = 10),
-          (gameImage.height = 350);
-        remainingTarget = 10;
+        gameFrame.style.height = `${M_SETTING.height}px`;
+        setting = M_SETTING;
+        remainingTarget = M_SETTING.target;
         break;
       case 'extreme':
-        gameArea.style.height = '600px';
-        (gameImage.target = 10),
-          (gameImage.obstacle = 15),
-          (gameImage.height = 350);
-        remainingTarget = 10;
+        gameFrame.style.height = `${EX_SETTING.height}px`;
+        setting = EX_SETTING;
+        remainingTarget = EX_SETTING.target;
         break;
     }
     counter.innerText = remainingTarget;
   }
 
-  return gameImage;
+  return new Image(setting);
 };
 
-const resetGame = () => {
-  changePopUpStatus('fail', 'none');
-  changePopUpStatus('retry', 'none');
-  changePopUpStatus('win', 'none');
-  changePopUpStatus('difficulty', 'block');
+const showStartButton = (show) => {
+  if (show) {
+    playButton.classList.remove('menu__button--pause');
+    playButton.classList.add('menu__button--start');
+    playButton.dataset.action = 'start';
+  } else {
+    playButton.classList.remove('menu__button--start');
+    playButton.classList.add('menu__button--pause');
+    playButton.dataset.action = 'pause';
+  }
+};
 
-  playButton.classList.remove('menu__button--pause');
-  playButton.classList.add('menu__button--start');
-  playButton.dataset.action = 'start';
+const startTimer = () => {
+  checkTimer = setInterval(() => {
+    timer.innerText = `00:0${--remainingTime}`;
 
-  playableArea.innerHTML = '';
-  timer.innerText = '00:10';
-  remainingTime = 10;
-  counter.innerText = '0';
+    if (remainingTime === 0) {
+      const failPopUp = new PopUpWithTitle(
+        'fail',
+        'You Lose😭 Will you try again?'
+      );
+      failPopUp.openPopUp();
+      clearInterval(checkTimer);
+    }
+  }, 1000);
+};
+
+const stopTimer = () => {
+  clearInterval(checkTimer);
 };
 
 playButton.addEventListener('click', () => {
   if (playButton.dataset.action === 'start') {
-    changePopUpStatus('difficulty', 'block');
+    buttonSound.play();
 
     if (firstGame) {
       bgSound.play();
       firstGame = false;
     }
 
-    buttonSound.play();
+    initGame();
   } else if (playButton.dataset.action === 'pause') {
-    changePopUpStatus('retry', 'block');
-    clearInterval(checkTimer);
+    const retryPopUp = new PopUpWithTitle('retry', 'Will you try again?');
+    retryPopUp.openPopUp();
+
+    stopTimer();
     buttonSound.play();
   }
 });
@@ -140,20 +210,11 @@ diffPopUp.addEventListener('click', (event) => {
     const gameImage = setDifficulty(event.target.dataset.id);
     gameImage.setImage(target, 'target');
     gameImage.setImage(obstacle, 'obstacle');
-    playButton.classList.remove('menu__button--start');
-    playButton.classList.add('menu__button--pause');
-    playButton.dataset.action = 'pause';
 
-    changePopUpStatus('difficulty', 'none');
+    showStartButton(false);
+    closePopUp();
 
-    checkTimer = window.setInterval(() => {
-      timer.innerText = `00:0${--remainingTime}`;
-
-      if (remainingTime === 0) {
-        changePopUpStatus('fail', 'block');
-        clearInterval(checkTimer);
-      }
-    }, 1000);
+    startTimer();
   }
 });
 
@@ -164,42 +225,22 @@ playableArea.addEventListener('click', () => {
     event.target.remove();
     counter.innerText = --remainingTarget;
 
-    const remainEl = playableArea.childNodes;
-    for (const el of remainEl) {
-      if (el.dataset.type === 'target') break;
-      else {
-        changePopUpStatus('win', 'block');
-        clearInterval(checkTimer);
-        winSound.play();
-        break;
-      }
-    }
+    !remainingTarget && finishGame('win', 'You win🎉 Will you try again?');
   } else if (event.target.dataset.type === 'obstacle') {
     obstacleSound.play();
-    changePopUpStatus('fail', 'block');
-    clearInterval(checkTimer);
+    finishGame('fail', 'You Lose😭 Will you try again?');
   }
 });
 
-popUpWrap.addEventListener('click', (event) => {
-  const clicked = event.target;
+restartBtn.addEventListener('click', () => {
+  buttonSound.play();
+  initGame();
+});
 
-  if (clicked.dataset.work === 'restart') {
-    buttonSound.play();
-    resetGame();
-  } else if (event.target.dataset.work === 'close') {
-    const popUpId = event.target.closest(`.pop-up`).dataset.id;
-    changePopUpStatus(popUpId, 'none');
+popUpWrap.addEventListener('click', () => {
+  if (event.target.dataset.work === 'close') {
+    closePopUp();
 
-    if (popUpId === 'retry') {
-      checkTimer = window.setInterval(() => {
-        timer.innerText = `00:0${--remainingTime}`;
-
-        if (remainingTime === 0) {
-          changePopUpStatus('fail', 'block');
-          clearInterval(checkTimer);
-        }
-      }, 1000);
-    }
+    if (event.target.closest('.pop-up--text')) startTimer();
   }
 });

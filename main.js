@@ -8,6 +8,11 @@ const M_SETTING = { target: 10, obstacle: 10, height: 600 };
 const EX_SETTING = { target: 10, obstacle: 15, height: 600 };
 const WIDTH = 700;
 const CLOSABLE = ['retry'];
+const RESULT_TEXT = {
+  retry: 'Will you try again?',
+  win: 'You win🎉 Will you try again?',
+  fail: 'You Lose😭 Will you try again?',
+};
 
 const gameFrame = document.querySelector('.game');
 const menuArea = document.querySelector('.menu');
@@ -117,10 +122,11 @@ const initGame = () => {
   counter.innerText = '0';
 };
 
-const finishGame = (result, text) => {
-  const resultPopUp = new PopUpWithTitle(result, text);
+const finishGame = (result) => {
+  console.log(RESULT_TEXT[result]);
+  const resultPopUp = new PopUpWithTitle(result, RESULT_TEXT[result]);
   resultPopUp.openPopUp();
-  clearInterval(checkTimer);
+  stopTimer();
 };
 
 const setDifficulty = (selectedDiff) => {
@@ -169,10 +175,7 @@ const startTimer = () => {
     timer.innerText = `00:0${--remainingTime}`;
 
     if (remainingTime === 0) {
-      const failPopUp = new PopUpWithTitle(
-        'fail',
-        'You Lose😭 Will you try again?'
-      );
+      const failPopUp = new PopUpWithTitle('fail', RESULT_TEXT.fail);
       failPopUp.openPopUp();
       clearInterval(checkTimer);
     }
@@ -194,7 +197,7 @@ playButton.addEventListener('click', () => {
 
     initGame();
   } else if (playButton.dataset.action === 'pause') {
-    const retryPopUp = new PopUpWithTitle('retry', 'Will you try again?');
+    const retryPopUp = new PopUpWithTitle('retry', RESULT_TEXT.retry);
     retryPopUp.openPopUp();
 
     stopTimer();
@@ -225,10 +228,10 @@ playableArea.addEventListener('click', () => {
     event.target.remove();
     counter.innerText = --remainingTarget;
 
-    !remainingTarget && finishGame('win', 'You win🎉 Will you try again?');
+    !remainingTarget && finishGame('win');
   } else if (event.target.dataset.type === 'obstacle') {
     obstacleSound.play();
-    finishGame('fail', 'You Lose😭 Will you try again?');
+    finishGame('fail');
   }
 });
 

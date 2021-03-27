@@ -17,10 +17,13 @@ export default class Field {
     this.onItemClick = onItemClick;
   }
 
-  init = () => {
+  clean() {
     this.playField.innerHTML = '';
-    this.playFieldRec = this.playField.getBoundingClientRect();
+  }
+
+  set = () => {
     this.gameSection.style.height = `${this.height}px`;
+    this.playFieldRec = this.playField.getBoundingClientRect();
     this._addItem('carrot', 'img/carrot.png');
     this._addItem('bug', 'img/bug.png');
   };

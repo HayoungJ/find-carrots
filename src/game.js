@@ -81,14 +81,14 @@ export class Game {
     this.remainingTime = this.playTime;
     this.timer.innerText = `00:${this.remainingTime}`;
     this.counter.innerText = '0';
-    this.playField.innerHTML = '';
+    this.gameField.clean();
     this.changePlayButtonStatus(true);
   }
 
   start() {
-    this.gameField.init();
-    this.startTimer();
     this.changePlayButtonStatus(false);
+    this.gameField.set();
+    this.startTimer();
   }
 
   pause() {
@@ -97,18 +97,19 @@ export class Game {
   }
 
   stop(reason) {
-    this.onStop(reason);
     this.stopTimer();
+    this.onStop(reason);
     this.changePlayButtonStatus(true);
   }
 
   selectDifficulty() {
+    this.difficultyPopUp.open();
     if (this.firstGame) {
       sound.playBackground();
       this.firstGame = false;
+    } else {
+      this.init();
     }
-    this.difficultyPopUp.open();
-    this.init();
   }
 
   setDifficulty = (select) => {

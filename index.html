@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Find Carrots🥕</title>
 
-    <script src="main.js" defer></script>
+    <script type="module" src="src/main.js" defer></script>
     <script
       src="https://kit.fontawesome.com/f7756ac958.js"
       crossorigin="anonymous"
     ></script>
-    <link rel="stylesheet" href="style.css" />
-    <link rel="icon" href="data:;base64, iVBORw0KGgo=" />
+    <link rel="stylesheet" href="style/style.css" />
   </head>
   <body>
     <section class="game">
@@ -23,28 +22,30 @@
         <div class="menu__timer">00:10</div>
         <div class="menu__counter">0</div>
       </nav>
-      <div class="find-carrot"></div>
-      <div class="pop-up-wrap hide">
-        <div class="pop-up pop-up--difficulty hide" data-id="difficulty">
+      <article class="play-field"></article>
+      <article class="pop-up-wrap pop-up-wrap--restart pop-up-wrap--hide">
+        <div class="pop-up">
           <button class="pop-up__close">
-            <i class="fas fa-times-circle" data-work="close"></i>
+            <i class="fas fa-times-circle"></i>
           </button>
-          <ul class="pop-up__select-diff">
+          <div class="pop-up__content"></div>
+          <button class="pop-up__restart">
+            <i class="fas fa-redo-alt"></i>
+          </button>
+        </div>
+      </article>
+      <article class="pop-up-wrap pop-up-wrap--difficulty pop-up-wrap--hide">
+        <div class="pop-up pop-up--difficulty">
+          <button class="pop-up__close">
+            <i class="fas fa-times-circle"></i>
+          </button>
+          <ul class="pop-up__select-difficulty">
             <li data-id="easy">EASY</li>
             <li data-id="medium">MEDIUM</li>
             <li data-id="extreme">EXTREME</li>
           </ul>
         </div>
-        <div class="pop-up pop-up--text hide">
-          <button class="pop-up__close">
-            <i class="fas fa-times-circle" data-work="close"></i>
-          </button>
-          <span class="pop-up__title"></span>
-          <button class="pop-up__restart" data-work="restart">
-            <i class="fas fa-redo-alt" data-work="restart"></i>
-          </button>
-        </div>
-      </div>
+      </article>
     </section>
     <section class="desc">
       This is a simple mini game🎮<br />

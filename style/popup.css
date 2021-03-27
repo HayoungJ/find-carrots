@@ -29,6 +29,10 @@
     visibility: hidden;
   }
 
+  .pop-up--difficulty .pop-up__close {
+    visibility: visible;
+  }
+
   .pop-up__select-difficulty {
     margin-top: 60px;
     display: flex;

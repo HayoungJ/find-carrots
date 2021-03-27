@@ -1,0 +1,37 @@
+@import './variable.css';
+@import './game.css';
+@import './popup.css';
+@import './description.css';
+
+body {
+	margin: 0;
+	padding: 0;
+	background-color: var(--background-color);
+}
+
+section {
+  width: var(--width);
+  margin: 30px auto 0;
+}
+
+div {
+	box-sizing: border-box;
+}
+
+button {
+	outline: none;
+	border: none;
+	cursor: pointer;
+	box-sizing: border-box;
+	background: transparent;
+}
+
+ul,
+li {
+	margin: 0;
+	padding: 0;
+}
+
+li {
+	list-style: none;
+}

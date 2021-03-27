@@ -1,0 +1,14 @@
+:root {
+  --width: 700px;
+  --game-height: 500px;
+  --menu-height: 250px;
+  --desc-height: ;
+
+  --background-color: black;
+  --counter-color: #dd2323;
+
+  --font-color-white: #f3f3f3;
+  --font-color-strong: #ffcc00;
+
+  --background-image-path: url(../img/background.png);
+}

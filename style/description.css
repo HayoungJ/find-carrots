@@ -1,0 +1,11 @@
+.desc {
+  color: var(--font-color-white);
+  font-size: 24px;
+  font-weight: bold;
+  line-height: 48px;
+  text-align: center;
+}
+
+.desc > strong {
+  color: var(--font-color-strong);
+}

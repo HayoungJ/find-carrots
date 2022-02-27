@@ -1,8 +1,22 @@
-Find-Carrots
+# 미니 게임 만들어보기
 
-This is a mini game which user can click and collect CARROTS🥕 <br/>
-Be aware not to click BUGS🐞 ! It will end up your try.<br/>
+## 프로젝트 기본 기능
 
-User can also choose difficulty of the game.<br/>
+### 미니 게임 플레이
+![Hnet-image (1)](https://user-images.githubusercontent.com/59152882/155872766-e629154b-5b40-4dc0-93be-e3eca3c4db2f.gif)
 
-Have fun with some exciting music🎧
+> 제한 시간 내에 벌레를 피해 당근을 클릭 해 수확하는 게임입니다. 제한 시간이 다 되거나 벌레를 선택 시 게임 실패, 제한 시간 내에 당근을 모두 수확 시 승리합니다.
+
+> 매 판 벌레와 당근의 위치는 랜덤하게 바뀝니다.
+
+> 게임 중에는 신나는 음악과 벌레, 당근 클릭 시 사운드가 나옵니다.
+
+### 난이도 선택
+![image](https://user-images.githubusercontent.com/59152882/155872668-71c7d17a-cc8f-47e9-9170-29009451ace8.png)
+
+> 선택한 난이도에 따라 벌레와 당근 갯수가 달라집니다.
+
+### 일시정지
+![image](https://user-images.githubusercontent.com/59152882/155872647-67881a23-38a9-4bc1-9fe2-df86e0339b2f.png)
+
+> 일시정지로 게임을 잠시 멈출 수도 있고 있습니다. 일시 정지 중에는 현재 게임을 포기하고 새로운 게임을 시작할 수 있는 팝업이 표시됩니다. 팝업을 닫으면 게임이 재개 됩니다.
